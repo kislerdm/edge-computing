@@ -7,3 +7,6 @@ TECHNOLOGY := js
 
 build: ## Builds the app using specified technology.
 	@ cd ./app/$(TECHNOLOGY)/ && make build
+
+train: ## Re-trains the model.
+	@ docker-compose run train "python main.py"

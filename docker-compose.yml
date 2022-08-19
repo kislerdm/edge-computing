@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  train:
+    build:
+      context: colortypemodel
+      dockerfile: Dockerfile
+    volumes:
+      - ${PWD}/data/colortype_train.csv:/app/data.csv
+      - ${PWD}/colortypemodel/model/:/app/model/

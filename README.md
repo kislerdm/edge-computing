@@ -21,7 +21,7 @@ _Limitations_:
 
 #### Color Type
 
-The color types include two options: "_Warm_" and "_Cold_". An [xgboost](https://xgboost.readthedocs.io/en/release_1.3.0/) binary classification [model was developed](./colortypemodel/main.py) using [the data sample](./data/colortype_train.csv) generated manually (thanks to my wife for that :) ).
+The color types include two options: "_Warm_" and "_Cold_". An [xgboost](https://xgboost.readthedocs.io/en/release_1.6.0/) binary classification [model was developed](./colortypemodel/main.py) using [the data sample](./data/colortype_train.csv) generated manually (thanks to my wife for that :) ).
 
 The trained model is [saved as JSON file](https://xgboost.readthedocs.io/en/release_1.3.0/python/python_api.html?highlight=dump_model#xgboost.Booster.dump_model).
 
