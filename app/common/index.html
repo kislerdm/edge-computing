@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>color theory app</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="icon" href="assets/favicon.jpg" type="image/x-icon">
+    <script src="assets/logic.js"></script>
+    <script src="assets/index.js"></script>
+</head>
+
+<body>
+<main>
+    <header>Color Theory App</header>
+    <div class="container">
+        <div class="color_input">
+            <h2>Pick a color</h2>
+            <input type="color" id="colorpicker" onchange="i()" value="#000000">
+            <div id="input_data" hidden>
+                <div>
+                    <label for="input_hex" id="input_hex">Color HEX Code: </label>
+                    <output name="input_hex" id="input_hex_value"></output>
+                </div>
+                <div>
+                    <label for="input_rgb" id="input_rgb">Color RGB Code: </label>
+                    <output name="input_rgb" id="input_rgb_value"></output>
+                </div>
+            </div>
+            <div id="color_output"></div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
