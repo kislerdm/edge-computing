@@ -28,6 +28,7 @@ jobs:
           path: colortypemodel/model/model.json
 
   build:
+    needs: train-color-type-model
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -52,10 +53,11 @@ jobs:
       - name: Upload built artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: build-${{ matrix.technology }}
+          name: build-artifacts-${{ matrix.technology }}
           path: app/logic/${{ matrix.technology }}/assets
 
   deploy-pages:
+    needs: build
     runs-on: ubuntu-latest
     concurrency:
       group: "pages"
@@ -75,7 +77,7 @@ jobs:
       - name: Download Go artigacts
         uses: actions/download-artifact@v3
         with:
-          name: go
+          name: build-artifacts-go
           path: app/logic/go/assets
       - name: Build pages
         run: make build-pages TECHNOLOGIES="go"
