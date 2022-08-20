@@ -64,7 +64,7 @@ The logic will be delivered using different technologies to assess delivery proc
         |-- go
         |   |-- README.md     <- readme with details about implementation
         |   |-- Makefile      <- commands to test and build the logic
-        |   |-- ...           <- logic implementation
+        |   |-- logic         <- logic implementation
         |   `-- assets        <- build results
         |       |-- index.js  <- all js dependecies
         |       `-- ...       <- all other artefacts to be dispatched
@@ -79,6 +79,7 @@ The logic will be delivered using different technologies to assess delivery proc
 
 `Makefile` has to include the following targets:
 
+- generate.dependencies
 - test
 - build
 
@@ -98,7 +99,7 @@ make build TECHNOLOGY=go
 #### Build flow
 
 1. The logic is compiled and the resulting artefacts are stored to the `app/{{technology}}/assets` subdirectory. _Example_: for Go, binary `logic.wasm` is stored to `app/go/assets/logic.wasm`. 
-2. All `js` dependencies are combined to `app/{{technology}}/assets/index.js`. _Example_: for Go, [`wasm_exec.js`](https://tinygo.org/docs/guides/webassembly/#how-it-works) and [`the init script`](app/logic/go/assets/init.js) shall be combined to `app/go/assets/index.js`.
+2. All `js` dependencies are combined to `app/{{technology}}/assets/index.js`. _Example_: for Go, [`wasm_exec.js`](https://tinygo.org/docs/guides/webassembly/#how-it-works) and [`the init script`](app/logic/go/logic.js) shall be combined to `app/go/assets/index.js`.
 3. Common dependencies are copied from `app/common` to `public/{{technology}}`.
 4. Technology-specific artefacts are copied from `app/{{technology}}/assets/` to `public/{{technology}}/assets/`.
 5. `public` pushed to github artefacts as part of [CI pipeline](https://github.com/peaceiris/actions-gh-pages) to deploy static website as github-pages deployment.

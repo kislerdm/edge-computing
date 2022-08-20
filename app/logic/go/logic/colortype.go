@@ -66,11 +66,11 @@ func (m model) predict(v map[string]float64) (float64, error) {
 }
 
 func Type(r, g, b float64) (bool, error) {
-	if m == nil {
+	if colorTypeModel == nil {
 		return false, errors.New("wrong model generated")
 	}
 
-	v, err := m.predict(
+	v, err := colorTypeModel.predict(
 		map[string]float64{
 			"r": r,
 			"g": g,
