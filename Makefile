@@ -24,8 +24,8 @@ TECHNOLOGIES := go
 build-pages: ## Builds the artifacts for release.
 	@ for t in $(TECHNOLOGIES) ; do \
 	    if [ ! -d public/$${t} ]; then mkdir -p public/$${t}; fi &&\
-	        cp -r app/common/ public/$${t}/;\
-	        cp -r app/logic/$${t}/assets public/$${t};\
+	        cp -r app/common/* public/$${t}/;\
+	        cp -r app/logic/$${t}/assets/* public/$${t}/assets/ ;\
     done
 
 localserver: ## Launch a web server for local tests.
