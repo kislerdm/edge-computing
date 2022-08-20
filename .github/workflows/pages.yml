@@ -1,0 +1,90 @@
+name: Deployment
+
+on:
+  push:
+    branches:
+      - "master"
+  pull_request:
+    types:
+      - closed
+    branches:
+      - "master"
+  workflow_dispatch:
+
+jobs:
+  train-color-type-model:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: '1'
+      - name: Train color type model
+        run: make train
+      - name: Upload model to artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: color-type-model
+          path: colortypemodel/model/model.json
+
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        technology:
+          - go
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: '1'
+      - name: Download pre-trained model from artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: color-type-model
+          path: colortypemodel/model
+      - name: Generate static dependencies
+        run: make generate.dependencies TECHNOLOGY=${{ matrix.technology }}
+      - name: Test
+        run: make test TECHNOLOGY=${{ matrix.technology }}
+      - name: Build
+        run: make build TECHNOLOGY=${{ matrix.technology }}
+      - name: Upload built artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-${{ matrix.technology }}
+          path: app/logic/${{ matrix.technology }}/assets
+
+  deploy-pages:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: "pages"
+      cancel-in-progress: true
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: '1'
+      - name: Download Go artigacts
+        uses: actions/download-artifact@v3
+        with:
+          name: go
+          path: app/logic/go/assets
+      - name: Build pages
+        run: make build-pages TECHNOLOGIES="go"
+      - name: Setup Pages
+        uses: actions/configure-pages@v1
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: 'public/'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@main
