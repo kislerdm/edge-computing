@@ -44,10 +44,11 @@ The logic will be delivered using different technologies to assess delivery proc
 |   |-- go
 |   |    |-- index.html       <- copied from app/common; loaded on request to https://edge-computing-demo.dkisler.com/go/
 |   |    `-- assets
-|   |        |-- logic.wasm   <- logic build artefact
-|   |        |-- index.js     <- concatination of app/go/assets/index.js and app/common/index.js
+|   |        |-- index.js     <- copied from app/common
 |   |        |-- styles.css   <- copied from app/common
-|   |        `-- favicon.jpg  <- copied from app/common
+|   |        |-- favicon.jpg  <- copied from app/common
+|   |        |-- logic.js     <- js logic dependecies for a given technology
+|   |        `-- ...          <- logic artifacts built for a given technology 
 |   |-- js
 |   |-- rust
 |   |-- technologyFoo
