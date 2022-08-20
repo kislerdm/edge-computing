@@ -19,5 +19,5 @@ test: ## Runs unit tests for the app developed using specified technology.
 build: ## Builds the app using specified technology.
 	@ cd $(APPS_DIR)/logic/$(TECHNOLOGY)/ && make build
 
-publish: ## Publishes artifacts.
-	@ $(foreach dir, $(wildcard $(APPS_DIR)/logic/*), $(subst $(dir),$1,$(APPS_DIR)/logic);)
+localserver: ## Launch a web server for local tests.
+	@ PORT=9090 DIR=$(PWD)/public/ go run --tags=localserver server/main.go
