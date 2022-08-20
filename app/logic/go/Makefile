@@ -37,7 +37,7 @@ setup.wasm:
 
 setup.js: setup.wasm
 	@ test -d assets || mkdir assets
-	@ docker run -v $(PWD):/src -w /src smithmicro/uglifyjs wasm_exec.js logic.js -o assets/index.js
+	@ docker run -v $(PWD):/src -w /src smithmicro/uglifyjs wasm_exec.js logic.js -o assets/logic.js
 	@ rm wasm_exec.js
 
 build: compile setup.js  ## Builds logic and js dependencies.
