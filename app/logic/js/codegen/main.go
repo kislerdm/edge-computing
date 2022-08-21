@@ -32,7 +32,7 @@ func genTemplate(t, path string, v interface{}) error {
 }
 
 func genColorNameDeps(dir string) error {
-	const t = `{{- define "color" -}}{n:"{{ .Name }}",r:{{ .R }},G:{{ .G }},B:{{ .B }}},{{- end }}const lT=[
+	const t = `{{- define "color" -}}{n:"{{ .Name }}",r:{{ .R }},g:{{ .G }},b:{{ .B }}},{{- end }}const lT=[
 {{- range . -}}
 	{{ template "color" . }}
 {{- end -}}]`

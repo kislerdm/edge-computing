@@ -4,6 +4,7 @@ help: ## Prints help message.
 	@ grep -h -E '^[a-zA-Z_.-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[1m%-30s\033[0m %s\n", $$1, $$2}'
 
 generate.dependencies: ## Generates required dependencies, i.e. model and lookup table.
+	@ test -d logic/data || mkdir -p logic/data
 	@ docker run --rm \
         -v $(PWD):/src \
         -w="/src" \
