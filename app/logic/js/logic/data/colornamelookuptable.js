@@ -1,4 +1,4 @@
-export const lT = [
+const lT = [
     {n: "Acid green", r: 176, g: 191, b: 26},
     {n: "Aero", r: 124, g: 185, b: 232},
     {n: "Aero blue", r: 201, g: 255, b: 229},

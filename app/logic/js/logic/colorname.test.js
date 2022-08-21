@@ -1,5 +1,3 @@
-import {name} from './colorname.js';
-
 const tests = [
     {
         name: "happy path: Aero",
@@ -21,6 +19,6 @@ const tests = [
 tests.forEach((test) => {
     const got = name(test.in.r, test.in.g, test.in.b);
     if (got !== test.want) {
-        throw Error(`${test.name} got: ${got}, want: ${test.want}`)
+        throw Error(`Test "${test.name}". got: ${got}, want: ${test.want}`);
     }
 });

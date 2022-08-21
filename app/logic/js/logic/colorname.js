@@ -1,6 +1,4 @@
-import {lT} from "./colornamelookuptable.js";
-
-export function name(r, g, b) {
+function name(r, g, b) {
     let o = "",
         d0 = 50.;
 
