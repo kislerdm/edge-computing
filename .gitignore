@@ -1,3 +1,5 @@
 .idea
 model.json
 app/logic/*/assets/logic.*
+app/logic/**/codegen/data
+app/logic/**/logic/data
