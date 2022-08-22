@@ -34,6 +34,7 @@ jobs:
       matrix:
         technology:
           - go
+          - js
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -79,8 +80,13 @@ jobs:
         with:
           name: build-artifacts-go
           path: app/logic/go/assets
+      - name: Download JS artigacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts-js
+          path: app/logic/js/assets
       - name: Build pages
-        run: make build-pages TECHNOLOGIES="go"
+        run: make build-pages TECHNOLOGIES="go js"
       - name: Setup Pages
         uses: actions/configure-pages@v1
       - name: Upload artifact

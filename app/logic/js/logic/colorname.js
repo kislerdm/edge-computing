@@ -1,4 +1,4 @@
-function name(r, g, b) {
+function N(r, g, b) {
     let o = "",
         d0 = 50.;
 

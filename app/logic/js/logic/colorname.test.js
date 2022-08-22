@@ -1,4 +1,4 @@
-const tests = [
+const testsN = [
     {
         name: "happy path: Aero",
         in: {r: 124, g: 185, b: 232},
@@ -16,8 +16,8 @@ const tests = [
     },
 ]
 
-tests.forEach((test) => {
-    const got = name(test.in.r, test.in.g, test.in.b);
+testsN.forEach((test) => {
+    const got = N(test.in.r, test.in.g, test.in.b);
     if (got !== test.want) {
         throw Error(`Test "${test.name}". got: ${got}, want: ${test.want}`);
     }
