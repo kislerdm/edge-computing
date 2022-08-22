@@ -4,7 +4,6 @@ help: ## Prints help message.
 	@ grep -h -E '^[a-zA-Z_.-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[1m%-30s\033[0m %s\n", $$1, $$2}'
 
 generate.dependencies: ## Generates required dependencies, i.e. model and lookup table.
-	@ test -d logic/data || mkdir -p logic/data
 	@ docker run --rm \
         -v $(PWD):/src \
         -w="/src" \
@@ -15,10 +14,9 @@ generate.dependencies: ## Generates required dependencies, i.e. model and lookup
 
 test:  ## Runs unit tests.
 	@ docker run --rm -v $(PWD)/logic:/src -w /src node:alpine3.16 \
-  		/bin/sh -c "npm install uglify-js -g > '/dev/null' 2>&1 && uglifyjs data/*.js *.js -o logic.test.js && node logic.test.js"
-	@ [ -f $(PWD)/logic/logic.test.js ] && rm $(PWD)/logic/logic.test.js
-
+  		/bin/sh -c "npm install uglify-js -g > '/dev/null' 2>&1 && uglifyjs *.js *.test -o test.js && node test.js"
+	@ [ -f $(PWD)/logic/test.js ] && rm $(PWD)/logic/test.js
 
 build:  ## Builds logic and js dependencies.
-	@ test -d assets || mkdir assets
-	@ docker run --rm -v $(PWD):/src -w /src smithmicro/uglifyjs logic/data/*.js $(ls logic/*.js | grep -v *.test.js) -o assets/logic.js
+	@ test -d build || mkdir build
+	@ docker run --rm -v $(PWD):/src -w /src smithmicro/uglifyjs logic/*.js -o build/logic.js

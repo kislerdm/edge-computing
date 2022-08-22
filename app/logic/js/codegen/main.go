@@ -35,7 +35,7 @@ func genColorNameDeps(dir string) error {
 	const t = `{{- define "color" -}}{n:"{{ .Name }}",r:{{ .R }},g:{{ .G }},b:{{ .B }}},{{- end }}const lT=[
 {{- range . -}}
 	{{ template "color" . }}
-{{- end -}}]`
+{{- end -}}];`
 
 	type color struct {
 		Name, R, G, B string
@@ -76,7 +76,7 @@ func genColorTypeDeps(dir string) error {
 	const t = `{{- define "node" -}}{id:{{ .ID }},{{- 
 if .Children -}}d:{{ .Depth }},f:"{{ .Feature }}",t:{{ .Threshold }},y:{{ .Yes }},n:{{ .No }},m:{{ 
 .Missing }},c:[{{- range .Children -}}{{ template "node" . }}{{- end -}}],{{- end -}}{{- 
-if not .Children -}}l:{{ .Leaf }},{{- end -}}},{{- end -}}const m = [{{- range . -}}{{ template "node" . }}{{- end -}}]`
+if not .Children -}}l:{{ .Leaf }},{{- end -}}},{{- end -}}const m = [{{- range . -}}{{ template "node" . }}{{- end -}}];`
 
 	type node struct {
 		ID        int     `json:"nodeid"`
@@ -100,7 +100,7 @@ if not .Children -}}l:{{ .Leaf }},{{- end -}}},{{- end -}}const m = [{{- range .
 
 func main() {
 	p, _ := os.Getwd()
-	dir := path.Dir(p) + "/logic/data"
+	dir := path.Dir(p) + "/logic"
 
 	if err := genColorTypeDeps(dir); err != nil {
 		log.Fatalln("cannot generate color type model:", err)

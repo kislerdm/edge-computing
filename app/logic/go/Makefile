@@ -21,11 +21,13 @@ test:  ## Runs unit tests.
 	    "go mod tidy && go test --tags=unittest -v -coverpkg=./... -coverprofile=coverage.out ./... && go tool cover -func coverage.out && rm coverage.out"
 
 compile:
+	@ test -d build || mkdir build
 	@ docker run --rm \
         -v $(PWD):/src \
         -w="/src" \
-        tinygo/tinygo:0.24.0 /bin/sh -c \
-        "if [ ! -d assets ]; then mkdir assets; fi && tinygo build -target=wasm -gc=leaking -opt=2 -no-debug -panic=trap -o assets/logic.wasm main.go"
+        tinygo/tinygo:0.24.0 tinygo build -target=wasm \
+            -gc=leaking -opt=2 -no-debug -panic=trap \
+                -o build/logic.wasm main.go
 
 setup.wasm:
 	@ docker run --rm \
@@ -36,8 +38,8 @@ setup.wasm:
         "cp /usr/local/tinygo/targets/wasm_exec.js wasm_exec.js"
 
 setup.js: setup.wasm
-	@ test -d assets || mkdir assets
-	@ docker run --rm -v $(PWD):/src -w /src smithmicro/uglifyjs wasm_exec.js logic.js -o assets/logic.js
+	@ test -d build || mkdir build
+	@ docker run --rm -v $(PWD):/src -w /src smithmicro/uglifyjs wasm_exec.js logic/logic.js -o build/logic.js
 	@ rm wasm_exec.js
 
 build: compile setup.js  ## Builds logic and js dependencies.

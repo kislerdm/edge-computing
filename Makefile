@@ -23,10 +23,20 @@ TECHNOLOGIES := go
 
 build-pages: ## Builds the artifacts for release.
 	@ for t in $(TECHNOLOGIES) ; do \
-	    if [ ! -d public/$${t} ]; then mkdir -p public/$${t}; fi &&\
+	    if [ ! -d public/$${t} ]; then mkdir -p public/$${t}/assets/logic; fi &&\
 	        cp -r app/common/* public/$${t}/;\
-	        cp -r app/logic/$${t}/assets/* public/$${t}/assets/ ;\
+	        cp -r app/logic/$${t}/build/* public/$${t}/assets/logic/ ;\
     done
 
 localserver: ## Launch a web server for local tests.
 	@ PORT=9090 DIR=$(PWD)/public/ go run --tags=localserver server/main.go
+
+audit: ## Runs audit of deployed pages.
+	@ docker container run --cap-add=SYS_ADMIN \
+      -v "$(PWD)/.lighthouseci/:/home/lhci/reports/.lighthouseci/" \
+      -v "$(PWD)/lighthouserc.yaml:/home/lhci/lighthouserc.yaml" \
+      -v "$(PWD)/public:/site" \
+      patrickhulce/lhci-client \
+      lhci collect --config=/home/lhci/lighthouserc.yaml
+# 	@ docker run --rm -v $(PWD)/audit:/src -w /src genv/lighthouse \
+#        --quiet --chrome-flags='--headless' --screenEmulation.disabled --only-audits='network-requests' --output=csv --output-path=go.json https://edge-computing-demo.dkisler.com/go/

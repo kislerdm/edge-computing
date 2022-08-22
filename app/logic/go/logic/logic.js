@@ -1,0 +1,1 @@
+const go = new Go; WebAssembly.instantiateStreaming(fetch("assets/logic/logic.wasm"), go.importObject).then(e => {go.run(e.instance)});

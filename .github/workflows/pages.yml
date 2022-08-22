@@ -55,7 +55,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: build-artifacts-${{ matrix.technology }}
-          path: app/logic/${{ matrix.technology }}/assets
+          path: app/logic/${{ matrix.technology }}/build
 
   deploy-pages:
     needs: build
@@ -79,12 +79,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-artifacts-go
-          path: app/logic/go/assets
+          path: app/logic/go/build
       - name: Download JS artigacts
         uses: actions/download-artifact@v3
         with:
           name: build-artifacts-js
-          path: app/logic/js/assets
+          path: app/logic/js/build
       - name: Build pages
         run: make build-pages TECHNOLOGIES="go js"
       - name: Setup Pages
