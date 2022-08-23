@@ -75,12 +75,12 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: '1'
-      - name: Download Go artigacts
+      - name: Download Go artifacts
         uses: actions/download-artifact@v3
         with:
           name: build-artifacts-go
           path: app/logic/go/build
-      - name: Download JS artigacts
+      - name: Download JS artifacts
         uses: actions/download-artifact@v3
         with:
           name: build-artifacts-js
@@ -96,3 +96,12 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@main
+      - name: Audit URLs using Lighthouse
+        uses: treosh/lighthouse-ci-action@v9
+        with:
+          urls: |
+            ${{ steps.deployment.outputs.page_url }}/go/
+            ${{ steps.deployment.outputs.page_url }}/js/
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          runs: 1

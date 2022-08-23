@@ -8,7 +8,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
 //go:embed index.html.template
@@ -64,7 +63,7 @@ func gatherReportData(p string) ([]obj, error) {
 			if d.IsDir() && filepath.Dir(path) == p {
 				assets := obj{
 					Path:  d.Name(),
-					Label: strings.ToUpper(d.Name()),
+					Label: d.Name(),
 				}
 				if err := imputeAssetsDetails(path+"/assets/logic", &assets); err != nil {
 					return err
