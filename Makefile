@@ -21,12 +21,20 @@ build: ## Builds the app using specified technology.
 
 TECHNOLOGIES := go
 
-build-pages: ## Builds the artifacts for release.
+generate-pages-per-technology:
+	@ test -d public || mkdir public
 	@ for t in $(TECHNOLOGIES) ; do \
 	    if [ ! -d public/$${t} ]; then mkdir -p public/$${t}/assets/logic; fi &&\
 	        cp -r app/common/* public/$${t}/;\
 	        cp -r app/logic/$${t}/build/* public/$${t}/assets/logic/ ;\
     done
+
+build-pages: generate-pages-per-technology ## Builds the artifacts for release.
+	@ docker run --rm \
+        -v $(PWD):/src \
+        -w="/src" \
+        golang:1.17.7-alpine3.15 \
+        /bin/sh -c "cd codegen && go run main.go -path-pages=../public"
 
 localserver: ## Launch a web server for local tests.
 	@ PORT=9090 DIR=$(PWD)/public/ go run --tags=localserver server/main.go

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>edge computing example</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#ffffff">
+    <style>html,body{height:100%;margin:0;font-family:Arial,sans-serif}main{width: 60%;position: absolute;left:20%;}header{top:0;color:#000;text-align:center;font-size:30px;font-weight:700;margin-top:20px;padding-bottom:20px;}footer{position:fixed;left:0;width:100%;text-align:center}footer{bottom:0}h3{text-align: center;}table {border-collapse: collapse;width: 100%;}td,th{border:1px solid #dddddd;text-align:center;padding:8px;}#ts{text-align:right;}tr:nth-child(even){background-color:#dddddd;}</style>
+</head>
+
+<body>
+    <header>Edge Computing Example</header>
+<main>
+    <p style="text-align: center;">The project aims to illustrate <a href="https://en.wikipedia.org/wiki/Edge_computing" rel="noopener" target="_blank">the edge computing</a>. Find details <a href="https://github.com/kislerdm/edge-computing" rel="noopener" target="_blank">here</a>.
+    It provides the web application executing entire business logic on the client side to eliminate the client-server communication as the crucial dependency of the UX flow.</p>
+    {{- if not (eq (len .) 0) -}}
+    <p>The logic is developed using different technologies. Find the benchmark below.</p>
+    <table>
+      <tr><th>Technology</th><th>Logic assets count</th><th>Size of logic assets* [bytes]</th></tr>
+      {{- range . -}}
+        <tr><th><a href="/{{ .Path }}/" rel="noopener" target="_blank">{{ .Label }}</a></th><th id="ts">{{ .CntLogicFiles }}</th><th id="ts">{{ .TotalSizeBitesLogic }}</th></tr>
+      {{- end -}}
+    </table>
+    <p><strong>*</strong>: total storage size on filesystem, see details <a href="https://pkg.go.dev/io/fs#FileInfo.Size" rel="noopener" target="_blank">here</a>.</p>
+    {{- end -}}
+</main>
+<script>
+    window.addEventListener("load",()=>{const e=document.getElementsByTagName("body"),t=document.createElement("footer");t.innerHTML=`${(new Date).getFullYear()} © <a href="https://www.dkisler.com" target="_blank" rel="noopener">D.Kisler</a>`;e[0].appendChild(t)});
+</script>
+</body>
+</html>
