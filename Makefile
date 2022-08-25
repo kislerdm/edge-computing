@@ -30,21 +30,7 @@ generate-pages-per-technology:
     done
 
 build-pages: generate-pages-per-technology ## Builds the artifacts for release.
-	@ docker run --rm \
-        -v $(PWD):/src \
-        -w="/src" \
-        golang:1.17.7-alpine3.15 \
-        /bin/sh -c "cd codegen && go run main.go -path-pages=../public"
+	@ docker-compose run build-pages -path-pages=/pages
 
 localserver: ## Launch a web server for local tests.
 	@ PORT=9090 DIR=$(PWD)/public/ go run --tags=localserver server/main.go
-
-audit: ## Runs audit of deployed pages.
-	@ docker container run --cap-add=SYS_ADMIN \
-      -v "$(PWD)/.lighthouseci/:/home/lhci/reports/.lighthouseci/" \
-      -v "$(PWD)/lighthouserc.yaml:/home/lhci/lighthouserc.yaml" \
-      -v "$(PWD)/public:/site" \
-      patrickhulce/lhci-client \
-      lhci collect --config=/home/lhci/lighthouserc.yaml
-# 	@ docker run --rm -v $(PWD)/audit:/src -w /src genv/lighthouse \
-#        --quiet --chrome-flags='--headless' --screenEmulation.disabled --only-audits='network-requests' --output=csv --output-path=go.json https://edge-computing-demo.dkisler.com/go/

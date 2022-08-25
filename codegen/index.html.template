@@ -16,9 +16,9 @@
     {{- if not (eq (len .) 0) -}}
     <p>The logic is developed using different technologies. Find the benchmark below.</p>
     <table>
-      <tr><th>Technology</th><th>Logic assets count</th><th>Size of logic assets* [bytes]</th></tr>
+      <tr><th>Technology</th><th>Logic assets count</th><th>Size of logic assets* [bytes]</th><th>Logic execution [usec.]</th></tr>
       {{- range . -}}
-        <tr><th><a href="/{{ .Path }}/" rel="noopener" target="_blank">{{ .Label }}</a></th><th id="ts">{{ .CntLogicFiles }}</th><th id="ts">{{ .TotalSizeBitesLogic }}</th></tr>
+        <tr><th><a href="/{{ .Path }}/" rel="noopener" target="_blank">{{ .Label }}</a></th><th id="ts">{{ .CntLogicFiles }}</th><th id="ts">{{ .TotalSizeBitesLogic }}</th><th id="ts">{{ .ExecutionMeanUS }} ± {{ .ExecutionSemUS }}</th></tr>
       {{- end -}}
     </table>
     <p><strong>*</strong>: total storage size on filesystem, see details <a href="https://pkg.go.dev/io/fs#FileInfo.Size" rel="noopener" target="_blank">here</a>.</p>

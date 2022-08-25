@@ -1,13 +1,18 @@
 package main
 
 import (
+	"context"
 	_ "embed"
 	"flag"
 	"html/template"
 	"io/fs"
 	"log"
+	"net"
+	"net/http"
 	"os"
 	"path/filepath"
+
+	"genpages/speedtest"
 )
 
 //go:embed index.html.template
@@ -23,9 +28,10 @@ func genTemplate(path string, v interface{}) error {
 }
 
 type obj struct {
-	Path, Label         string
-	TotalSizeBitesLogic uint32
-	CntLogicFiles       uint8
+	Path, Label                     string
+	TotalSizeBitesLogic             uint32
+	ExecutionMeanUS, ExecutionSemUS uint16
+	CntLogicFiles                   uint8
 }
 
 func imputeAssetsDetails(p string, o *obj) error {
@@ -51,7 +57,7 @@ func imputeAssetsDetails(p string, o *obj) error {
 	return nil
 }
 
-func gatherReportData(p string) ([]obj, error) {
+func gatherReportData(p string, url string) ([]obj, error) {
 	var o []obj
 
 	if err := filepath.WalkDir(
@@ -68,6 +74,9 @@ func gatherReportData(p string) ([]obj, error) {
 				if err := imputeAssetsDetails(path+"/assets/logic", &assets); err != nil {
 					return err
 				}
+				if err := imputeSpeedtest(url+"/"+d.Name(), &assets); err != nil {
+					return err
+				}
 				o = append(o, assets)
 			}
 
@@ -80,6 +89,44 @@ func gatherReportData(p string) ([]obj, error) {
 	return o, nil
 }
 
+func imputeSpeedtest(url string, assets *obj) error {
+	o, err := speedtest.Run(url, 1000)
+	if err != nil {
+		return err
+	}
+	assets.ExecutionMeanUS = o.MeanUS
+	assets.ExecutionSemUS = o.SemUM
+	return nil
+}
+
+type server struct {
+	l    net.Listener
+	s    http.Server
+	Addr string
+}
+
+func StartServer() (*server, error) {
+	l, err := net.Listen("tcp", ":9090")
+	if err != nil {
+		return nil, err
+	}
+	const address = "http://localhost:9090"
+	return &server{
+		l:    l,
+		s:    http.Server{Addr: address},
+		Addr: address,
+	}, nil
+}
+
+func (s *server) Serve(path string) error {
+	s.s.Handler = http.FileServer(http.Dir(path))
+	return s.s.Serve(s.l)
+}
+
+func (s *server) Stop() error {
+	return s.s.Shutdown(context.Background())
+}
+
 func main() {
 	var p string
 	flag.StringVar(&p, "path-pages", "", "path to keep pages data")
@@ -89,9 +136,24 @@ func main() {
 		log.Fatalln("path to pages must be set")
 	}
 
-	r, err := gatherReportData(p)
+	s, err := StartServer()
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	go func() {
+		if err := s.Serve(p); err != http.ErrServerClosed {
+			log.Fatalln(err)
+		}
+	}()
+
+	r, err := gatherReportData(p, s.Addr)
 	if err != nil {
 		log.Fatalln("cannot gather report", err)
+	}
+
+	if err := s.Stop(); err != nil {
+		log.Println(err)
 	}
 
 	if err := genTemplate(p+"/index.html", r); err != nil {

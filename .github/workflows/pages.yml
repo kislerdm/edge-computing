@@ -96,12 +96,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@main
-      - name: Audit URLs using Lighthouse
-        uses: treosh/lighthouse-ci-action@v9
-        with:
-          urls: |
-            ${{ steps.deployment.outputs.page_url }}/go/
-            ${{ steps.deployment.outputs.page_url }}/js/
-          uploadArtifacts: true
-          temporaryPublicStorage: true
-          runs: 1

@@ -7,3 +7,11 @@ services:
     volumes:
       - ${PWD}/data/colortype_train.csv:/app/data.csv
       - ${PWD}/colortypemodel/model/:/app/model/
+  build-pages:
+    build:
+      context: codegen
+      dockerfile: Dockerfile
+    cap_add:
+      - 'SYS_ADMIN'
+    volumes:
+      - ${PWD}/public:/pages

@@ -1,12 +1,9 @@
-package main
+package speedtest
 
 import (
 	"context"
-	"encoding/json"
-	"flag"
 	"fmt"
-	"log"
-	"os"
+	"math"
 	"time"
 
 	"github.com/chromedp/chromedp"
@@ -18,80 +15,73 @@ func timer(repetition int) string {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min);
-};
+}
 
 function timer(tries) {
     var al = [], i = 0;
     while (i < tries) {
         var t0 = performance.now();
         start(...[0, 0, 0].map(() => g(1, 255)));
-        al.push((performance.now() - t0) * 1000);
-        i++;
+        const d = (performance.now() - t0) * 1000;
+		if (d > 0) {
+			al.push(d);
+        	i++;
+		}
     }
     return al;
-};
+}
 
 timer(%d);`, repetition,
 	)
 }
 
-type output struct {
+type Output struct {
 	URL       string    `json:"url"`
 	ElapsedUS []float64 `json:"elapsed_us"`
-	MeanUS    float64   `json:"mean_us"`
+	MeanUS    uint16    `json:"mean_us"`
+	SemUM     uint16    `json:"std_error_of_mean_us"`
 }
 
-func (o *output) mean() {
+func (o *Output) Stats() {
+	mean := o.mean()
+	o.SemUM = uint16(o.sigma(mean))
+	o.MeanUS = uint16(mean)
+}
+
+func (o *Output) mean() float64 {
 	var s float64
 	for _, el := range o.ElapsedUS {
 		s += el
 	}
-	o.MeanUS = s / float64(len(o.ElapsedUS))
+	return s / float64(len(o.ElapsedUS))
 }
 
-func main() {
-	var p string
-	var reps int
-	var o output
-
-	flag.StringVar(&o.URL, "url", "", "url to call")
-	flag.StringVar(&p, "output", "", "output to store results")
-	flag.IntVar(&reps, "reps", 1000, "number of repetitions to calculate duration")
-	flag.Parse()
-
-	if o.URL == "" {
-		log.Fatalln("url must be set")
+func (o *Output) sigma(m float64) float64 {
+	var s float64
+	for _, el := range o.ElapsedUS {
+		s += (el - m) * (el - m)
 	}
-	if p == "" {
-		log.Fatalln("path to store output must be set")
-	}
+	den := float64(len(o.ElapsedUS))
+	return math.Sqrt(s / den / (den - 1))
+}
 
+// Run performs speedtest by emulating a browser and timing the js function execution.
+func Run(url string, reps int) (Output, error) {
 	ctx, cancel := chromedp.NewContext(context.Background())
 	defer cancel()
+
+	o := Output{URL: url}
 
 	if err := chromedp.Run(
 		ctx,
 		chromedp.Navigate(o.URL),
 		chromedp.Sleep(1000*time.Millisecond),
-	); err != nil {
-		log.Fatalln(err)
-	}
-
-	if err := chromedp.Run(
-		ctx,
 		chromedp.EvaluateAsDevTools(timer(reps), &o.ElapsedUS),
 	); err != nil {
-		log.Fatalln(err)
+		return o, err
 	}
 
-	o.mean()
+	o.Stats()
 
-	b, err := json.Marshal(o)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	if err := os.WriteFile(p, b, 0664); err != nil {
-		log.Fatalln(err)
-	}
+	return o, nil
 }
