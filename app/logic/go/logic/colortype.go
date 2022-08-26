@@ -22,9 +22,6 @@ func (t *node) getNodeByID(id int) *node {
 		return t
 	}
 	for _, nodeChild := range t.Children {
-		if nodeChild.ID == id {
-			return nodeChild
-		}
 		if n := nodeChild.getNodeByID(id); n != nil {
 			return n
 		}
