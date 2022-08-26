@@ -17,7 +17,7 @@ func main() {
 					return map[string]interface{}{"error": "no r, g, b input provided"}
 				}
 
-				htmlString, err := logic.UI(
+				o, err := logic.Start(
 					args[0].Float(),
 					args[1].Float(),
 					args[2].Float(),
@@ -27,9 +27,10 @@ func main() {
 					return map[string]interface{}{"error": err.Error()}
 				}
 
-				js.Global().Get("document").Call("getElementById", "color_output").Set("innerHTML", htmlString)
-
-				return nil
+				return map[string]interface{}{
+					"name":    o.Name,
+					"is_warm": o.IsWarm,
+				}
 			},
 		),
 	)

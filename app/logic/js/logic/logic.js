@@ -40,7 +40,7 @@ function t(g, id) {
 function T(r, g, b) {
     const d = {"r": r, "g": g, "b": b};
     let o = 0;
-    for (const [idx, tr] of m.entries()) {
+    for (const tr of m) {
         let i = 0;
         while (true) {
             const n = t(tr, i);
@@ -63,11 +63,4 @@ function T(r, g, b) {
     return Math.exp(-o) <= 1.;
 }
 
-function start(r, g, b) {
-    let n = N(r, g, b);
-    n = n === "" ? "Not found" : n;
-    const t = T(r, g, b) === true ? "Warm" : "Cool";
-    document.getElementById("color_output").innerHTML = `<div><label for="output_name" id="output_label">Color Name:</label><output name="color_name" id="output_name"> ` +
-        n + `</output></div><div><label for="output_type" id="output_label">Color Type:</label><output name="color_type" id="output_type"> ` + t + `</output></div>`;
-    return null;
-}
+const start = (r, g, b) => ({name: N(r, g, b), is_warm: T(r, g, b)});
