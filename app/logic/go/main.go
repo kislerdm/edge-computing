@@ -17,12 +17,13 @@ func main() {
 					return map[string]interface{}{"error": "no r, g, b input provided"}
 				}
 
-				o, err := logic.Start(
-					args[0].Float(),
-					args[1].Float(),
-					args[2].Float(),
-				)
+				var r, g, b int = args[0].Int(), args[1].Int(), args[2].Int()
 
+				if r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255 {
+					return map[string]interface{}{"error": "wrong RGB input"}
+				}
+
+				o, err := logic.Start(uint8(r), uint8(g), uint8(b))
 				if err != nil {
 					return map[string]interface{}{"error": err.Error()}
 				}

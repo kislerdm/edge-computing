@@ -4,9 +4,7 @@ import "testing"
 
 func TestColorName(t *testing.T) {
 	type args struct {
-		r float64
-		g float64
-		b float64
+		r, g, b uint8
 	}
 	tests := []struct {
 		name string

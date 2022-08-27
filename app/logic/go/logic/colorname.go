@@ -1,32 +1,49 @@
 package logic
 
-import "math"
-
 type color struct {
 	Name    string
-	R, G, B float64
+	R, G, B uint8
 }
 
-func Name(r, g, b float64) string {
-	const distMaxThreshold = 50.
+func dist(x, x0 uint8) uint8 {
+	if x > x0 {
+		return x - x0
+	}
+	return x0 - x
+}
+
+func Name(r, g, b uint8) string {
 	output := ""
-	distance := distMaxThreshold
+	const maxDistance = 5
+	maxDistanceTotal := uint8(3 * maxDistance)
 
 	for _, color := range colorNameLookupTable {
+		var totalDist uint8
+		d := dist(color.R, r)
+		if d > maxDistance {
+			continue
+		}
+		totalDist += d
 
-		dR := color.R - r
-		dG := color.G - g
-		dB := color.B - b
+		d = dist(color.G, g)
+		if d > maxDistance {
+			continue
+		}
+		totalDist += d
 
-		if dR == 0 && dG == 0 && dB == 0 {
+		d = dist(color.B, b)
+		if d > maxDistance {
+			continue
+		}
+		totalDist += d
+
+		if totalDist == 0 {
 			return color.Name
 		}
-
-		if d := math.Sqrt(dR*dR + dG*dG + dB*dB); d < distance {
+		if totalDist < maxDistanceTotal {
 			output = color.Name
-			distance = d
+			maxDistanceTotal = totalDist
 		}
-
 	}
 
 	return output

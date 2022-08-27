@@ -9,7 +9,7 @@ import (
 
 func TestStart(t *testing.T) {
 	type args struct {
-		r, g, b float64
+		r, g, b uint8
 	}
 	tests := []struct {
 		name    string
@@ -34,12 +34,6 @@ func TestStart(t *testing.T) {
 				IsWarm: true,
 			},
 			wantErr: false,
-		},
-		{
-			name:    "unhappy path: wrong input args",
-			args:    args{-1, 0, 0},
-			want:    logic.Output{},
-			wantErr: true,
 		},
 	}
 	for _, tt := range tests {

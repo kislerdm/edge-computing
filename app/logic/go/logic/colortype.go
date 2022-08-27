@@ -6,18 +6,18 @@ import (
 )
 
 type node struct {
-	ID        int     `json:"nodeid"`
-	Depth     int     `json:"depth,omitempty"`
+	ID        uint8   `json:"nodeid"`
+	Depth     uint8   `json:"depth,omitempty"`
 	Feature   string  `json:"split,omitempty"`
-	Threshold float64 `json:"split_condition,omitempty"`
-	Yes       int     `json:"yes,omitempty"`
-	No        int     `json:"no,omitempty"`
-	Missing   int     `json:"missing,omitempty"`
+	Threshold uint8   `json:"split_condition,omitempty"`
+	Yes       uint8   `json:"yes,omitempty"`
+	No        uint8   `json:"no,omitempty"`
+	Missing   uint8   `json:"missing,omitempty"`
 	Leaf      float64 `json:"leaf,omitempty"`
 	Children  []*node `json:"children,omitempty"`
 }
 
-func (t *node) getNodeByID(id int) *node {
+func (t *node) getNodeByID(id uint8) *node {
 	if t.ID == id {
 		return t
 	}
@@ -31,10 +31,10 @@ func (t *node) getNodeByID(id int) *node {
 
 type model []node
 
-func (m model) predict(v map[string]float64) (float64, error) {
+func (m model) predict(v map[string]uint8) (float64, error) {
 	var o float64
 	for _, tree := range m {
-		idx := 0
+		var idx uint8 = 0
 		for {
 			n := tree.getNodeByID(idx)
 			if n == nil {
@@ -62,13 +62,13 @@ func (m model) predict(v map[string]float64) (float64, error) {
 	return o, nil
 }
 
-func Type(r, g, b float64) (bool, error) {
+func Type(r, g, b uint8) (bool, error) {
 	if colorTypeModel == nil {
 		return false, errors.New("wrong model generated")
 	}
 
 	v, err := colorTypeModel.predict(
-		map[string]float64{
+		map[string]uint8{
 			"r": r,
 			"g": g,
 			"b": b,
