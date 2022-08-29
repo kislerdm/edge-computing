@@ -43,3 +43,6 @@ setup.js: setup.wasm
 	@ rm wasm_exec.js
 
 build: compile setup.js  ## Builds logic and js dependencies.
+
+benchmark:
+	@ GOMAXPROCS=1 go test -bench=. -benchtime=1000000x -count=5 -benchmem ./logic | tee benchmark-results.txt

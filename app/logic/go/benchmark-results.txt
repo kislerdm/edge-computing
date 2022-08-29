@@ -1,0 +1,8 @@
+goos: darwin
+goarch: arm64
+pkg: edgecomputing/logic
+BenchmarkType  	 1000000	       494.5 ns/op	       0 B/op	       0 allocs/op
+BenchmarkName  	 1000000	       119.9 ns/op	       0 B/op	       0 allocs/op
+BenchmarkStart 	 1000000	       616.3 ns/op	       0 B/op	       0 allocs/op
+PASS
+ok  	edgecomputing/logic	1.311s
