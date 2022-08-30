@@ -17,7 +17,7 @@ func main() {
 					return map[string]interface{}{"error": "no r, g, b input provided"}
 				}
 
-				var r, g, b int = args[0].Int(), args[1].Int(), args[2].Int()
+				var r, g, b = args[0].Float(), args[1].Float(), args[2].Float()
 
 				if r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255 {
 					return map[string]interface{}{"error": "wrong RGB input"}
