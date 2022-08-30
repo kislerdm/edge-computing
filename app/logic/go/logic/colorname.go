@@ -14,7 +14,7 @@ func dist(x, x0 uint8) uint8 {
 
 func Name(r, g, b uint8) string {
 	output := ""
-	const maxDistance = 5
+	const maxDistance = 10
 	maxDistanceTotal := uint8(3 * maxDistance)
 
 	for _, color := range colorNameLookupTable {

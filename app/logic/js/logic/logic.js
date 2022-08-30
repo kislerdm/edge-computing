@@ -1,23 +1,38 @@
 function N(r, g, b) {
     let o = "",
-        d0 = 50.;
+        d0 = 10,
+        mD = 3 * d0;
 
-    lT.some((c) => {
-        const dR = c.r - r,
-            dG = c.g - g,
-            dB = c.b - b;
+    for (c of lT){
+        let m = 0;
 
-        if (dR === 0 && dG === 0 && dB === 0) {
-            o = c.n;
-            return true;
+        const dR = c.r - r;
+        if (dR > d0) {
+            continue;
+        }
+        m += dR;
+
+        const dG = c.g - g;
+        if (dG > d0) {
+            continue;
+        }
+        m += dG;
+
+        const dB = c.b - b;
+        if (dB > d0) {
+            continue;
+        }
+        m += dB;
+
+        if (m === 0) {
+            return c.n;
         }
 
-        const d = Math.sqrt(dR * dR + dG * dG + dB * dB);
-        if (d < d0) {
+        if (m < mD) {
             o = c.n;
-            d0 = d;
+            mD = m;
         }
-    });
+    }
 
     return o;
 }
