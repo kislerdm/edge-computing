@@ -1,8 +1,35 @@
 goos: darwin
 goarch: arm64
 pkg: edgecomputing/logic
-BenchmarkType  	 1000000	       494.5 ns/op	       0 B/op	       0 allocs/op
-BenchmarkName  	 1000000	       119.9 ns/op	       0 B/op	       0 allocs/op
-BenchmarkStart 	 1000000	       616.3 ns/op	       0 B/op	       0 allocs/op
+BenchmarkTypeBlack  	 1000000	       497.6 ns/op	       0 B/op	       0 allocs/op
+BenchmarkTypeBlack  	 1000000	       480.1 ns/op	       0 B/op	       0 allocs/op
+BenchmarkTypeBlack  	 1000000	       479.3 ns/op	       0 B/op	       0 allocs/op
+BenchmarkTypeBlack  	 1000000	       484.8 ns/op	       0 B/op	       0 allocs/op
+BenchmarkTypeBlack  	 1000000	       481.9 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNameBlack  	 1000000	       118.7 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNameBlack  	 1000000	       115.7 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNameBlack  	 1000000	       115.5 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNameBlack  	 1000000	       115.8 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNameBlack  	 1000000	       116.5 ns/op	       0 B/op	       0 allocs/op
+BenchmarkStartBlack 	 1000000	       606.6 ns/op	       0 B/op	       0 allocs/op
+BenchmarkStartBlack 	 1000000	       607.9 ns/op	       0 B/op	       0 allocs/op
+BenchmarkStartBlack 	 1000000	       608.3 ns/op	       0 B/op	       0 allocs/op
+BenchmarkStartBlack 	 1000000	       605.9 ns/op	       0 B/op	       0 allocs/op
+BenchmarkStartBlack 	 1000000	       600.5 ns/op	       0 B/op	       0 allocs/op
+BenchmarkTypeWhite  	 1000000	       891.3 ns/op	       0 B/op	       0 allocs/op
+BenchmarkTypeWhite  	 1000000	       888.3 ns/op	       0 B/op	       0 allocs/op
+BenchmarkTypeWhite  	 1000000	       891.4 ns/op	       0 B/op	       0 allocs/op
+BenchmarkTypeWhite  	 1000000	       887.1 ns/op	       0 B/op	       0 allocs/op
+BenchmarkTypeWhite  	 1000000	       891.7 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNameWhite  	 1000000	      2094 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNameWhite  	 1000000	      2110 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNameWhite  	 1000000	      2098 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNameWhite  	 1000000	      2072 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNameWhite  	 1000000	      2084 ns/op	       0 B/op	       0 allocs/op
+BenchmarkStartWrite 	 1000000	      3015 ns/op	       0 B/op	       0 allocs/op
+BenchmarkStartWrite 	 1000000	      3002 ns/op	       0 B/op	       0 allocs/op
+BenchmarkStartWrite 	 1000000	      3010 ns/op	       0 B/op	       0 allocs/op
+BenchmarkStartWrite 	 1000000	      3008 ns/op	       0 B/op	       0 allocs/op
+BenchmarkStartWrite 	 1000000	      3024 ns/op	       0 B/op	       0 allocs/op
 PASS
-ok  	edgecomputing/logic	1.311s
+ok  	edgecomputing/logic	36.183s
