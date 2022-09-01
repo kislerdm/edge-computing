@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 	_ "embed"
+	"encoding/json"
 	"flag"
+	"fmt"
 	"html/template"
 	"io/fs"
 	"log"
@@ -18,7 +20,20 @@ import (
 //go:embed index.html.template
 var t string
 
-func genTemplate(path string, v interface{}) error {
+func genHTML(path string, v interface{}) error {
+	return genTemplate(t, path, v)
+}
+
+func genDataJS(path string, v interface{}) error {
+	d, err := json.Marshal(v)
+	if err != nil {
+		log.Println(err)
+	}
+	const js = "(()=>{var d={},e=0;for(let[a,f]of(statsData.forEach(b=>{for(let[a,f]of Object.entries(b.output.elapsed))if(void 0===d[a]&&(d[a]={}),d[a][b.label]=f,null===document.getElementById(\"elapsed-time-${k}\")){var c=document.createElement(\"div\");c.setAttribute(\"id\",`elapsed-time-${a}`);let g=document.getElementsByTagName(\"main\")[0];g.appendChild(c)}e++}),Object.entries(d))){var b=[],c=0;for(let[g,h]of Object.entries(f))b.push({x:h.map(a=>1e3*a),name:g,type:\"histogram\",histfunc:\"count\",opacity:1/(1+c/e),xbins:{size:10,start:0}}),c++;Plotly.newPlot(`elapsed-time-${a}`,b,{title:`Logic execution elapsed time, color: ${a}`,yaxis:{title:\"Count\"},xaxis:{title:\"Elapsed time [usec.]\",range:[0,500]},boxmode:\"group\"})}})()"
+	return genTemplate(fmt.Sprintf(`const statsData = %v;%s`, string(d), js), path, nil)
+}
+
+func genTemplate(t, path string, v interface{}) error {
 	f, err := os.Create(path)
 	if err != nil {
 		return err
@@ -28,10 +43,13 @@ func genTemplate(path string, v interface{}) error {
 }
 
 type obj struct {
-	Path, Label                     string
-	TotalSizeBitesLogic             uint32
-	ExecutionMeanUS, ExecutionSemUS uint16
-	CntLogicFiles                   uint8
+	Path                string           `json:"_"`
+	Label               string           `json:"label"`
+	Raw                 speedtest.Output `json:"output"`
+	TotalSizeBitesLogic uint32           `json:"totalSizeBitesLogic"`
+	ExecutionMeanUS     uint16           `json:"executionMeanUS"`
+	ExecutionSemUS      uint16           `json:"executionSemUS"`
+	CntLogicFiles       uint8            `json:"cntLogicFiles"`
 }
 
 func imputeAssetsDetails(p string, o *obj) error {
@@ -94,8 +112,9 @@ func imputeSpeedtest(url string, assets *obj) error {
 	if err != nil {
 		return err
 	}
-	assets.ExecutionMeanUS = o.MeanUS
-	assets.ExecutionSemUS = o.SemUM
+	assets.Raw = o
+	assets.ExecutionMeanUS = o.StatsUS.Mean
+	assets.ExecutionSemUS = o.StatsUS.SEM
 	return nil
 }
 
@@ -156,7 +175,11 @@ func main() {
 		log.Println(err)
 	}
 
-	if err := genTemplate(p+"/index.html", r); err != nil {
+	if err := genDataJS(p+"/stats.js", r); err != nil {
+		log.Fatalln("error generating data", err)
+	}
+
+	if err := genHTML(p+"/index.html", r); err != nil {
 		log.Fatalln("error generating template", err)
 	}
 }
