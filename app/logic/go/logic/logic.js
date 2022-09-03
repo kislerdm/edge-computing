@@ -1,1 +1,1 @@
-const go = new Go; WebAssembly.instantiateStreaming(fetch("assets/logic/logic.wasm"), go.importObject).then(e => {go.run(e.instance)});
+var wasm;const go=new Go;WebAssembly.instantiateStreaming(fetch("assets/logic/logic.wasm"),go.importObject).then(a=>{wasm=a.instance,go.run(wasm)});const start=(a,b,c)=>{wasm.exports.n(a,b,c);let d=wasm.exports.getNAddress(),e=wasm.exports.memory.buffer.slice(d,d+wasm.exports.getNLen());return{name:String.fromCharCode.apply(null,new Int8Array(e)),is_warm:wasm.exports.t(a,b,c)}}
