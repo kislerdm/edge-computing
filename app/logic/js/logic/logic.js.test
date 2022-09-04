@@ -27,12 +27,12 @@ const testsT = [
    {
        name: "happy path: cold",
        in: {r: 182, g: 221, b: 199},
-       want: false,
+       want: 0,
    },
    {
        name: "happy path: warm",
        in: {r: 254, g: 37, b: 0},
-       want: true,
+       want: 1,
    },
 ]
 

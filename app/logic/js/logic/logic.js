@@ -75,7 +75,7 @@ function T(r, g, b) {
             }
         }
     }
-    return Math.exp(-o) <= 1.;
+    return Math.exp(-o) <= 1. ? 1 : 0;
 }
 
 const start = (r, g, b) => ({name: N(r, g, b), is_warm: T(r, g, b)});
