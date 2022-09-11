@@ -23,7 +23,7 @@
       {{- end -}}
     </table>
     <p><strong>*</strong>: total storage size on filesystem, see details <a href="https://pkg.go.dev/io/fs#FileInfo.Size" rel="noopener" target="_blank">here</a>.</p>
-    <p><strong>**</strong>: logic execution time was measured by calling the logic invocation function `start` from browser for every technology using <a href="https://github.com/kislerdm/edge-computing/blob/77a0d5593805e928fefc276c8c0720637d9ff4d4/codegen/speedtest/speedtest.go#L12" rel="noopener" target="_blank">the script</a> as part of <a href="https://github.com/kislerdm/edge-computing/tree/master/codegen/speedtest" rel="noopener" target="_blank">the Go package</a>.</p>
+    <p><strong>**</strong>: logic execution time was measured by calling the logic invocation function `start` from browser for every technology using <a href="https://github.com/kislerdm/edge-computing/blob/ca66ff5b4b42c30a22a7a65d8bfcb0f8fcfb681c/codegen/speedtest/speedtest.go#L12-L47" rel="noopener" target="_blank">the script</a> as part of <a href="https://github.com/kislerdm/edge-computing/tree/master/codegen/speedtest" rel="noopener" target="_blank">the Go package</a>.</p>
     {{- end -}}
     <h2>Logic execution time breakdown</h2>
 </main>
