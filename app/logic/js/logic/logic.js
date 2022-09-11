@@ -3,22 +3,24 @@ function N(r, g, b) {
         d0 = 10,
         mD = 3 * d0;
 
-    for (c of lT){
+    const diff = (a, b) => a > b ? a - b : b - a;
+
+    for (c of lT) {
         let m = 0;
 
-        const dR = c.r - r;
+        const dR = diff(c.r, r);
         if (dR > d0) {
             continue;
         }
         m += dR;
 
-        const dG = c.g - g;
+        const dG = diff(c.g, g);
         if (dG > d0) {
             continue;
         }
         m += dG;
 
-        const dB = c.b - b;
+        const dB = diff(c.b, b);
         if (dB > d0) {
             continue;
         }
