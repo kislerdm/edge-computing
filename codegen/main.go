@@ -29,7 +29,7 @@ func genDataJS(path string, v interface{}) error {
 	if err != nil {
 		log.Println(err)
 	}
-	const js = "(()=>{var d={},e=0;for(let[a,f]of(statsData.forEach(b=>{for(let[a,f]of Object.entries(b.output.elapsed))if(void 0===d[a]&&(d[a]={}),d[a][b.label]=f,null===document.getElementById(\"elapsed-time-${k}\")){var c=document.createElement(\"div\");c.setAttribute(\"id\",`elapsed-time-${a}`);let g=document.getElementsByTagName(\"main\")[0];g.appendChild(c)}e++}),Object.entries(d))){var b=[],c=0;for(let[g,h]of Object.entries(f))b.push({x:h.map(a=>1e3*a),name:g,type:\"histogram\",histfunc:\"count\",opacity:1/(1+c/e),xbins:{size:10,start:0}}),c++;Plotly.newPlot(`elapsed-time-${a}`,b,{title:`Logic execution elapsed time, color: ${a}`,yaxis:{title:\"Count\"},xaxis:{title:\"Elapsed time [usec.]\",range:[0,500]},boxmode:\"group\"})}})()"
+	const js = "(()=>{var d={},e=0;for(let[a,f]of(statsData.forEach(b=>{for(let[a,f]of Object.entries(b.output.elapsed))if(void 0===d[a]&&(d[a]={}),d[a][b.label]=f,null===document.getElementById(\"elapsed-time-${k}\")){var c=document.createElement(\"div\");c.setAttribute(\"id\",`elapsed-time-${a}`);let g=document.getElementsByTagName(\"main\")[0];g.appendChild(c)}e++}),Object.entries(d))){var b=[],c=0;for(let[g,h]of Object.entries(f))b.push({x:h.map(a=>1e3*a),name:g,type:\"histogram\",histfunc:\"count\",opacity:1/(1+c/e),xbins:{size:10,start:0}}),c++;Plotly.newPlot(`elapsed-time-${a}`,b,{title:`Color: ${a}`,yaxis:{title:\"Count\"},xaxis:{title:\"Elapsed time [usec.]\",range:[0,500]},boxmode:\"group\"})}})()"
 	return genTemplate(fmt.Sprintf(`const statsData = %v;%s`, string(d), js), path, nil)
 }
 
