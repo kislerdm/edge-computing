@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ${PWD}/data/colortype_train.csv:/app/data.csv
-      - ${PWD}/colortypemodel/model/:/app/model/
+      - ${PWD}/colortypemodel/model:/app/model
   build-pages:
     build:
       context: codegen
